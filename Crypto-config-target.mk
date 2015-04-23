@@ -184,7 +184,6 @@ common_src_files := \
   crypto/conf/conf_mall.c \
   crypto/conf/conf_mod.c \
   crypto/conf/conf_sap.c \
-  crypto/constant_time_locl.h \
   crypto/cpt_err.c \
   crypto/cryptlib.c \
   crypto/cversion.c \
@@ -532,14 +531,16 @@ common_src_files := \
   crypto/x509v3/v3_utl.c \
   crypto/x509v3/v3err.c \
 
+# crypto/constant_time_locl.h
+
 common_c_includes := \
-  external/openssl/. \
-  external/openssl/crypto \
-  external/openssl/crypto/asn1 \
-  external/openssl/crypto/evp \
-  external/openssl/crypto/modes \
-  external/openssl/include \
-  external/openssl/include/openssl \
+  $(LOCAL_PATH)/. \
+  $(LOCAL_PATH)/crypto \
+  $(LOCAL_PATH)/crypto/asn1 \
+  $(LOCAL_PATH)/crypto/evp \
+  $(LOCAL_PATH)/crypto/modes \
+  $(LOCAL_PATH)/include \
+  $(LOCAL_PATH)/include/openssl \
 
 arm_cflags := \
   -DAES_ASM \

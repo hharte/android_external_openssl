@@ -16,6 +16,8 @@ include $(LOCAL_PATH)/android-config.mk
 # Replace cflags with static-specific cflags so we dont build in libdl deps
 LOCAL_CFLAGS_32 := $(openssl_cflags_static_32)
 LOCAL_CFLAGS_64 := $(openssl_cflags_static_64)
+LOCAL_SRC_FILES += $(sort, $(LOCAL_SRC_FILES_$(TARGET_ARCH)))
+LOCAL_CFLAGS += $(LOCAL_CFLAGS_$(TARGET_ARCH))
 include $(BUILD_STATIC_LIBRARY)
 
 #######################################
@@ -42,32 +44,7 @@ LOCAL_MODULE := libcrypto
 LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/android-config.mk $(LOCAL_PATH)/Crypto.mk
 include $(LOCAL_PATH)/Crypto-config-target.mk
 include $(LOCAL_PATH)/android-config.mk
+LOCAL_SRC_FILES := $(sort $(LOCAL_SRC_FILES_$(TARGET_ARCH)))
+LOCAL_CFLAGS += $(LOCAL_CFLAGS_$(TARGET_ARCH))
 include $(BUILD_SHARED_LIBRARY)
 
-#######################################
-# host shared library
-include $(CLEAR_VARS)
-LOCAL_SHARED_LIBRARIES := $(log_shared_libraries)
-LOCAL_CFLAGS += -DPURIFY
-LOCAL_LDLIBS += -ldl
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE := libcrypto-host
-LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/android-config.mk $(LOCAL_PATH)/Crypto.mk
-LOCAL_MULTILIB := both
-include $(LOCAL_PATH)/Crypto-config-host.mk
-include $(LOCAL_PATH)/android-config.mk
-include $(BUILD_HOST_SHARED_LIBRARY)
-
-########################################
-# host static library, which is used by some SDK tools.
-
-include $(CLEAR_VARS)
-LOCAL_SHARED_LIBRARIES := $(log_shared_libraries)
-LOCAL_CFLAGS += -DPURIFY
-LOCAL_LDLIBS += -ldl
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE := libcrypto_static
-LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/android-config.mk $(LOCAL_PATH)/Crypto.mk
-include $(LOCAL_PATH)/Crypto-config-host.mk
-include $(LOCAL_PATH)/android-config.mk
-include $(BUILD_HOST_STATIC_LIBRARY)
